@@ -36,15 +36,9 @@ export class AppComponent implements OnInit {
 
   loadStats() {
     this.loading.set(true);
-    this.statsService.getStats().subscribe({
-      next: (data) => {
-        this.stats.set(data);
-        this.loading.set(false);
-      },
-      error: (error) => {
-        console.error('Error loading stats:', error);
-        this.loading.set(false);
-      }
+    this.statsService.getStats().subscribe((data) => {
+      this.stats.set(data);
+      this.loading.set(false);
     });
   }
 
