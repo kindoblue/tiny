@@ -16,6 +16,7 @@ test('scrape table data', async ({ page }) => {
 
   // Wait a moment for the cookie banner to disappear
   await page.waitForTimeout(400);
+  
 
   // Wait for the table to be visible - using a more specific selector
   const table = await page.waitForSelector('.hockeydata');

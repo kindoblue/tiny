@@ -1,85 +1,121 @@
-:host {
-  display: block;
-  background-color: #f5f5f5;
+.app-wrapper {
   min-height: 100vh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
 }
 
-mat-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.main-content {
+  flex: 1;
+  padding: 2rem 0;
+}
 
-  .toolbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+.toolbar-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
 
-    .left-section {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
-      .menu-icon {
-        margin-right: 0.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 24px;
-        height: 24px;
-      }
+.right-section {
+  display: flex;
+  gap: 0.5rem;
+}
 
-      .title {
-        font-size: 1.25rem;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-      }
-    }
-
-    .right-section {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-
-      .toolbar-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-
-        mat-icon {
-          font-size: 24px;
-          width: 24px;
-          height: 24px;
-          line-height: 24px;
-        }
-
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.1);
-        }
-      }
-    }
-  }
+.menu-icon {
+  margin-right: 0.5rem;
 }
 
 .loading-bar {
   position: fixed;
-  top: 64px; // Height of the toolbar
+  top: 64px;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 1000;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1.5rem 1rem;
+  padding: 0 1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.stat-card {
+  border-radius: 8px !important;
+  background: white !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    background: rgba(0, 0, 0, 0.02);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+    mat-card-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin: 0;
+      color: #333;
+    }
+  }
+
+  .stat-value {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .value {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .percentage {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .trend-icon {
+    margin-left: auto;
+  }
+}
+
+.success-text {
+  color: #4caf50;
+}
+
+.error-text {
+  color: #f44336;
+}
+
+.neutral-text {
+  color: #9e9e9e;
 }
 
 .loading-container {
@@ -87,87 +123,6 @@ mat-toolbar {
   justify-content: center;
   align-items: center;
   min-height: 200px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  padding: 1rem 0;
-}
-
-.stat-card {
-  border-radius: 16px !important;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-  background: white;
-  transition: box-shadow 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-  }
-
-  mat-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 1.25rem 1.25rem 0.5rem;
-    background: rgba(0, 0, 0, 0.02);
-
-    .mat-mdc-card-header-text {
-      margin: 0;
-    }
-
-    mat-card-title {
-      font-size: 1.1rem;
-      font-weight: 500;
-      margin-bottom: 0;
-    }
-  }
-
-  .trend-icon {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    font-size: 24px;
-    line-height: 24px;
-  }
-
-  mat-card-content {
-    padding: 1rem 1.25rem;
-  }
-
-  .stat-value {
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-
-    .value {
-      font-size: 2rem;
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .percentage {
-      font-size: 1rem;
-      font-weight: 500;
-    }
-  }
-}
-
-.success-text {
-  color: #2e7d32;
-}
-
-.error-text {
-  color: #d32f2f;
-}
-
-.neutral-text {
-  color: #757575;
 }
 
 .animate-spin {
@@ -185,6 +140,16 @@ mat-toolbar {
 
 @media screen and (max-width: 599px) {
   .loading-bar {
-    top: 56px; // Height of the toolbar on mobile
+    top: 56px;
+  }
+  
+  .stat-card {
+    .value {
+      font-size: 2rem;
+    }
+    
+    .percentage {
+      font-size: 1rem;
+    }
   }
 }
