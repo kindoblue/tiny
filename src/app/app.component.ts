@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatProgressSpinnerModule,
     MatIconModule,
     MatDividerModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatButtonModule
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
@@ -29,10 +31,25 @@ export class AppComponent implements OnInit {
   constructor(private statsService: StatsService) {}
 
   ngOnInit() {
-    this.statsService.getStats().subscribe(data => {
-      this.stats.set(data);
-      this.loading.set(false);
+    this.loadStats();
+  }
+
+  loadStats() {
+    this.loading.set(true);
+    this.statsService.getStats().subscribe({
+      next: (data) => {
+        this.stats.set(data);
+        this.loading.set(false);
+      },
+      error: (error) => {
+        console.error('Error loading stats:', error);
+        this.loading.set(false);
+      }
     });
+  }
+
+  refreshData() {
+    this.loadStats();
   }
 
   getTrend(percentage: string): 'up' | 'down' | 'stable' {
@@ -58,11 +75,11 @@ export class AppComponent implements OnInit {
     const trend = this.getTrend(percentage);
     switch (trend) {
       case 'up':
-        return 'trending_up';
+        return 'arrow_upward';
       case 'down':
-        return 'trending_down';
+        return 'arrow_downward';
       default:
-        return 'trending_flat';
+        return 'remove';
     }
   }
 

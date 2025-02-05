@@ -1,7 +1,21 @@
-
-
-<mat-toolbar color="primary" class="mb-4">
-  <span>Dashboard Statistics</span>
+<mat-toolbar color="primary">
+  <div class="toolbar-content">
+    <div class="left-section">
+      <mat-icon class="menu-icon">dashboard</mat-icon>
+      <span class="title">Dashboard Statistics</span>
+    </div>
+    <div class="right-section">
+      <button mat-icon-button class="toolbar-button" (click)="refreshData()" aria-label="Refresh data">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <button mat-icon-button class="toolbar-button" aria-label="View settings">
+        <mat-icon>settings</mat-icon>
+      </button>
+      <button mat-icon-button class="toolbar-button" aria-label="More options">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+  </div>
 </mat-toolbar>
 
 <div class="container">
