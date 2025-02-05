@@ -30,6 +30,11 @@
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
   background: white;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  }
 
   mat-card-header {
     display: flex;
@@ -88,16 +93,6 @@
 
 .neutral-text {
   color: #757575;
-}
-
-mat-card {
-  margin-bottom: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-  }
 }
 
 .animate-spin {

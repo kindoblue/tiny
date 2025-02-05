@@ -23,15 +23,15 @@
       <mat-card class="stat-card">
         <mat-card-header>
           <mat-card-title>{{ stat.category }}</mat-card-title>
-          <mat-icon [class]="getColorClass(stat.trend)" class="trend-icon">
-            {{ getTrendIcon(stat.trend) }}
+          <mat-icon [class]="getColorClass(stat.percentage)" class="trend-icon">
+            {{ getTrendIcon(stat.percentage) }}
           </mat-icon>
         </mat-card-header>
         <mat-card-content>
           <div class="stat-value">
-            <span class="value">{{ stat.numericValue }}</span>
-            <span [class]="getColorClass(stat.trend)" class="percentage">
-              {{ stat.numericPercentage >= 0 ? '+' : '' }}{{ stat.numericPercentage }}%
+            <span class="value">{{ stat.value }}</span>
+            <span [class]="getColorClass(stat.percentage)" class="percentage">
+              {{ formatPercentage(stat.percentage) }}
             </span>
           </div>
         </mat-card-content>

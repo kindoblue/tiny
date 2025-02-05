@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StatsService, EnhancedStats } from './services/stats.service';
+import { StatsService } from './services/stats.service';
+import { Stats } from './models/stats.interface';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,7 +23,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  stats = signal<EnhancedStats[]>([]);
+  stats = signal<Stats[]>([]);
   loading = signal<boolean>(true);
 
   constructor(private statsService: StatsService) {}
@@ -34,7 +35,15 @@ export class AppComponent implements OnInit {
     });
   }
 
-  getColorClass(trend: string): string {
+  getTrend(percentage: string): 'up' | 'down' | 'stable' {
+    const value = parseFloat(percentage);
+    if (value > 0) return 'up';
+    if (value < 0) return 'down';
+    return 'stable';
+  }
+
+  getColorClass(percentage: string): string {
+    const trend = this.getTrend(percentage);
     switch (trend) {
       case 'up':
         return 'success-text';
@@ -45,7 +54,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  getTrendIcon(trend: string): string {
+  getTrendIcon(percentage: string): string {
+    const trend = this.getTrend(percentage);
     switch (trend) {
       case 'up':
         return 'trending_up';
@@ -54,5 +64,10 @@ export class AppComponent implements OnInit {
       default:
         return 'trending_flat';
     }
+  }
+
+  formatPercentage(value: string): string {
+    const num = parseFloat(value);
+    return num >= 0 ? `+${value}%` : `${value}%`;
   }
 }
