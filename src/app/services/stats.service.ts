@@ -12,12 +12,7 @@ export class StatsService {
   constructor(private http: HttpClient) {}
 
   getStats(): Observable<Stats[]> {
-    return this.http.get<Stats[]>(this.apiUrl).pipe(
-      catchError(error => {
-        console.error('Error fetching stats:', error);
-        return of(this.getFallbackData());
-      })
-    );
+    return this.http.get<Stats[]>(this.apiUrl);
   }
 
   private getFallbackData(): Stats[] {
