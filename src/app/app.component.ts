@@ -4,6 +4,7 @@ import { StatsService } from './services/stats.service';
 import { Stats } from './models/stats.interface';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -16,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatIconModule,
     MatDividerModule,
     MatToolbarModule,

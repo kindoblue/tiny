@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, delay } from 'rxjs';
 import { Stats } from '../models/stats.interface';
 
 @Injectable({
@@ -12,7 +12,12 @@ export class StatsService {
   constructor(private http: HttpClient) {}
 
   getStats(): Observable<Stats[]> {
-    return this.http.get<Stats[]>(this.apiUrl);
+    return this.http.get<Stats[]>(this.apiUrl).pipe(
+      delay(Math.random() * 2000 + 1000),
+      
+      // Randomly fail 20% of the time
+      // mergeMap(data => Math.random() > 0.2 ? of(data) : throwError(() => new Error('Random failure')))
+    );
   }
 
   private getFallbackData(): Stats[] {

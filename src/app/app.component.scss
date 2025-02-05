@@ -68,6 +68,14 @@ mat-toolbar {
   }
 }
 
+.loading-bar {
+  position: fixed;
+  top: 64px; // Height of the toolbar
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -172,5 +180,11 @@ mat-toolbar {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .loading-bar {
+    top: 56px; // Height of the toolbar on mobile
   }
 }
