@@ -8,6 +8,12 @@
         <span class="title">Dashboard Statistics</span>
       </div>
       <div class="right-section">
+        <button mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          Dashboard
+        </button>
+        <button mat-button routerLink="/floor-plan" routerLinkActive="active">
+          Floor Plan
+        </button>
         <button mat-icon-button class="toolbar-button" (click)="refreshData()" aria-label="Refresh data">
           <mat-icon>refresh</mat-icon>
         </button>
@@ -22,33 +28,14 @@
   </mat-toolbar>
 
   <!-- Loading bar -->
-  @if (loading()) {
+  @if (loading) {
     <mat-progress-bar mode="indeterminate" class="loading-bar"></mat-progress-bar>
   }
 
   <!-- Main content -->
   <main class="main-content">
     <div class="container">
-      <div class="stats-grid">
-        @for (stat of stats(); track stat.id) {
-          <mat-card class="stat-card">
-            <mat-card-header>
-              <mat-card-title>{{ stat.category }}</mat-card-title>
-              <mat-icon [class]="getColorClass(stat.percentage)" class="trend-icon">
-                {{ getTrendIcon(stat.percentage) }}
-              </mat-icon>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="stat-value">
-                <span class="value">{{ stat.value }}</span>
-                <span [class]="getColorClass(stat.percentage)" class="percentage">
-                  {{ formatPercentage(stat.percentage) }}
-                </span>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        }
-      </div>
+      <router-outlet></router-outlet>
     </div>
   </main>
 

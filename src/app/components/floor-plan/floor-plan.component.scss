@@ -1,0 +1,178 @@
+.floor-plan-container {
+  width: 100%;
+  height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.controls {
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.floor-select {
+  min-width: 200px;
+  margin-bottom: -1.25em;  /* Fix Material form field margin */
+}
+
+.tools {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.svg-container {
+  flex: 1;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  background-color: white;
+}
+
+.room {
+  cursor: default;
+}
+
+.room.selected rect.room-bg {
+  cursor: grab;
+}
+
+.room.selected.dragging rect.room-bg {
+  cursor: grabbing;
+}
+
+.room rect.room-bg {
+  fill: white;
+  stroke: #2196F3;
+  stroke-width: 2;
+  rx: 8;
+  ry: 8;
+}
+
+.room rect.room-bg:hover {
+  fill: #f8f9fa;
+}
+
+.room.selected rect.room-bg {
+  stroke: #1976D2;
+  stroke-width: 3;
+}
+
+.room text {
+  pointer-events: none;
+  font-weight: 500;
+}
+
+.seat {
+  pointer-events: none;  /* Prevent any drag events on the seat group */
+}
+
+.seat rect {
+  pointer-events: all;  /* Re-enable pointer events just for the clickable rectangle */
+  cursor: grab;
+  stroke: #666;
+  stroke-width: 1;
+}
+
+.seat.dragging rect {
+  cursor: grabbing;
+}
+
+.seat rect:hover {
+  stroke-width: 2;
+  stroke: #333;
+}
+
+.seat text {
+  pointer-events: none;
+  font-size: 10px;
+}
+
+.resize-handle {
+  fill: #2196F3;
+  stroke: white;
+  stroke-width: 2;
+  pointer-events: all;
+}
+
+.resize-handle-corner.nw {
+  cursor: nw-resize !important;
+}
+
+.resize-handle-corner.ne {
+  cursor: ne-resize !important;
+}
+
+.resize-handle-corner.se {
+  cursor: se-resize !important;
+}
+
+.resize-handle-corner.sw {
+  cursor: sw-resize !important;
+}
+
+.resize-handle-edge.n {
+  cursor: n-resize !important;
+}
+
+.resize-handle-edge.s {
+  cursor: s-resize !important;
+}
+
+.resize-handle-edge.e {
+  cursor: e-resize !important;
+}
+
+.resize-handle-edge.w {
+  cursor: w-resize !important;
+}
+
+.json-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.json-dialog {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #333;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    padding: 16px;
+    border-radius: 4px;
+    overflow: auto;
+    max-height: 50vh;
+    margin: 0;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+  }
+} 

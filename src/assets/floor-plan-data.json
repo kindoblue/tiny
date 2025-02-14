@@ -1,0 +1,65 @@
+{
+  "id": "building-1",
+  "name": "Main Building",
+  "floors": [
+    {
+      "id": "floor-1",
+      "name": "Ground Floor",
+      "rooms": [
+        {
+          "id": "room-1",
+          "name": "Conference Room A",
+          "x": 50,
+          "y": 50,
+          "width": 200,
+          "height": 150,
+          "seats": [
+            {
+              "id": "seat-1",
+              "label": "A1",
+              "x": 80,
+              "y": 80,
+              "status": "available"
+            },
+            {
+              "id": "seat-2",
+              "label": "A2",
+              "x": 120,
+              "y": 80,
+              "status": "occupied"
+            }
+          ]
+        },
+        {
+          "id": "room-2",
+          "name": "Office Space",
+          "x": 300,
+          "y": 50,
+          "width": 250,
+          "height": 200,
+          "seats": [
+            {
+              "id": "seat-3",
+              "label": "B1",
+              "x": 330,
+              "y": 80,
+              "status": "available"
+            },
+            {
+              "id": "seat-4",
+              "label": "B2",
+              "x": 380,
+              "y": 80,
+              "status": "reserved"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "floor-2",
+      "name": "First Floor",
+      "rooms": []
+    }
+  ]
+} 

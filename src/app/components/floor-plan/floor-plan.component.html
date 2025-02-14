@@ -1,0 +1,49 @@
+<div class="floor-plan-container">
+  <div class="controls">
+    <mat-form-field appearance="outline" class="floor-select">
+      <mat-label>Select Floor</mat-label>
+      <mat-select [(ngModel)]="selectedFloorId" (selectionChange)="onFloorChange()">
+        <mat-option *ngFor="let floor of building?.floors" [value]="floor.id">
+          {{floor.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="tools">
+      <button mat-raised-button 
+        (click)="setTool('select')" 
+        [color]="currentTool === 'select' ? 'primary' : ''">
+        Select
+      </button>
+      <button mat-raised-button 
+        (click)="setTool('room')" 
+        [color]="currentTool === 'room' ? 'primary' : ''">
+        Add Room
+      </button>
+      <button mat-raised-button 
+        (click)="setTool('seat')" 
+        [color]="currentTool === 'seat' ? 'primary' : ''">
+        Add Desk
+      </button>
+      <button mat-raised-button 
+        color="accent"
+        (click)="saveFloorPlan()">
+        Save Floor Plan
+      </button>
+    </div>
+  </div>
+  <div #svgContainer class="svg-container"></div>
+  
+  <!-- JSON Output Dialog -->
+  @if (showJsonOutput) {
+    <div class="json-overlay" (click)="showJsonOutput = false">
+      <div class="json-dialog" (click)="$event.stopPropagation()">
+        <h2>Floor Plan Data</h2>
+        <pre>{{jsonOutput}}</pre>
+        <div class="dialog-actions">
+          <button mat-button (click)="showJsonOutput = false">Close</button>
+          <button mat-raised-button color="primary" (click)="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+      </div>
+    </div>
+  }
+</div> 
