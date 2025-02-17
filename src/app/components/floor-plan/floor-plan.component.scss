@@ -108,6 +108,16 @@
   stroke: white;
   stroke-width: 2;
   pointer-events: all;
+  r: 8;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    transform: translate(-12px, -12px);
+    cursor: inherit;
+  }
 }
 
 .resize-handle-corner.nw {

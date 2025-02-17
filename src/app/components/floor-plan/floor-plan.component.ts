@@ -11,6 +11,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+interface HandlePosition {
+  position: 'nw' | 'ne' | 'se' | 'sw' | 'n' | 'e' | 's' | 'w';
+  x: number;
+  y: number;
+}
+
 @Component({
   selector: 'app-floor-plan',
   standalone: true,
@@ -262,101 +268,7 @@ export class FloorPlanComponent implements OnInit {
     });
 
     // Add resize handles
-    // Corner handles
-    const corners = [
-      { class: 'nw', x: 0, y: 0 },
-      { class: 'ne', x: room.width, y: 0 },
-      { class: 'se', x: room.width, y: room.height },
-      { class: 'sw', x: 0, y: room.height }
-    ];
-
-    corners.forEach(corner => {
-      roomG.append('circle')
-        .attr('class', `resize-handle resize-handle-corner ${corner.class}`)
-        .attr('cx', corner.x)
-        .attr('cy', corner.y)
-        .attr('r', 6)
-        .call((d3.drag() as any)
-          .on('drag', (event: any) => {
-            const dx = event.dx;
-            const dy = event.dy;
-            
-            switch (corner.class) {
-              case 'nw':
-                room.x += dx;
-                room.y += dy;
-                room.width -= dx;
-                room.height -= dy;
-                break;
-              case 'ne':
-                room.y += dy;
-                room.width += dx;
-                room.height -= dy;
-                break;
-              case 'se':
-                room.width += dx;
-                room.height += dy;
-                break;
-              case 'sw':
-                room.x += dx;
-                room.width -= dx;
-                room.height += dy;
-                break;
-            }
-
-            // Ensure minimum size
-            if (room.width < 100) room.width = 100;
-            if (room.height < 100) room.height = 100;
-
-            // Update room visuals
-            this.updateRoomVisuals(room);
-          }));
-    });
-
-    // Edge handles
-    const edges = [
-      { class: 'n', x: room.width / 2, y: 0 },
-      { class: 'e', x: room.width, y: room.height / 2 },
-      { class: 's', x: room.width / 2, y: room.height },
-      { class: 'w', x: 0, y: room.height / 2 }
-    ];
-
-    edges.forEach(edge => {
-      roomG.append('circle')
-        .attr('class', `resize-handle resize-handle-edge ${edge.class}`)
-        .attr('cx', edge.x)
-        .attr('cy', edge.y)
-        .attr('r', 6)
-        .call((d3.drag() as any)
-          .on('drag', (event: any) => {
-            const dx = event.dx;
-            const dy = event.dy;
-            
-            switch (edge.class) {
-              case 'n':
-                room.y += dy;
-                room.height -= dy;
-                break;
-              case 'e':
-                room.width += dx;
-                break;
-              case 's':
-                room.height += dy;
-                break;
-              case 'w':
-                room.x += dx;
-                room.width -= dx;
-                break;
-            }
-
-            // Ensure minimum size
-            if (room.width < 100) room.width = 100;
-            if (room.height < 100) room.height = 100;
-
-            // Update room visuals
-            this.updateRoomVisuals(room);
-          }));
-    });
+    this.createResizeHandles(room);
 
     // Add dragging behavior for room
     roomG.call((d3.drag() as any)
@@ -374,6 +286,104 @@ export class FloorPlanComponent implements OnInit {
       }));
   }
 
+  private createResizeHandles(room: Room): void {
+    const handleRadius = 8;
+    const roomElement = d3.select(`#room-${room.id}`);
+    
+    // Remove existing handles first
+    roomElement.selectAll('.resize-handle').remove();
+    
+    // Create handles within the room group
+    const handles = roomElement
+      .selectAll('.resize-handle')
+      .data(this.getHandlePositions(room))
+      .join('circle')
+      .attr('class', 'resize-handle')
+      .attr('cx', d => d.x)  // Set the x position
+      .attr('cy', d => d.y)  // Set the y position
+      .attr('r', handleRadius)
+      .style('cursor', (d: HandlePosition) => this.getResizeCursor(d.position));
+
+    handles.call((d3.drag() as any)
+      .on('drag', (event: any) => {
+        const dx = event.dx;
+        const dy = event.dy;
+        const d = event.subject as HandlePosition;
+        
+        switch (d.position) {
+          case 'nw':
+            room.x += dx;
+            room.y += dy;
+            room.width -= dx;
+            room.height -= dy;
+            break;
+          case 'ne':
+            room.y += dy;
+            room.width += dx;
+            room.height -= dy;
+            break;
+          case 'se':
+            room.width += dx;
+            room.height += dy;
+            break;
+          case 'sw':
+            room.x += dx;
+            room.width -= dx;
+            room.height += dy;
+            break;
+          case 'n':
+            room.y += dy;
+            room.height -= dy;
+            break;
+          case 'e':
+            room.width += dx;
+            break;
+          case 's':
+            room.height += dy;
+            break;
+          case 'w':
+            room.x += dx;
+            room.width -= dx;
+            break;
+        }
+
+        // Ensure minimum size
+        if (room.width < 100) room.width = 100;
+        if (room.height < 100) room.height = 100;
+
+        // Update room visuals
+        this.updateRoomVisuals(room);
+      }));
+  }
+
+  private getHandlePositions(room: Room): HandlePosition[] {
+    const positions: HandlePosition[] = [
+      { position: 'nw', x: 0, y: 0 },
+      { position: 'ne', x: room.width, y: 0 },
+      { position: 'se', x: room.width, y: room.height },
+      { position: 'sw', x: 0, y: room.height },
+      { position: 'n', x: room.width / 2, y: 0 },
+      { position: 'e', x: room.width, y: room.height / 2 },
+      { position: 's', x: room.width / 2, y: room.height },
+      { position: 'w', x: 0, y: room.height / 2 }
+    ];
+    return positions;
+  }
+
+  private getResizeCursor(position: HandlePosition['position']): string {
+    const cursors: Record<HandlePosition['position'], string> = {
+      nw: 'nw-resize',
+      ne: 'ne-resize',
+      se: 'se-resize',
+      sw: 'sw-resize',
+      n: 'n-resize',
+      e: 'e-resize',
+      s: 's-resize',
+      w: 'w-resize'
+    };
+    return cursors[position];
+  }
+
   private updateRoomVisuals(room: Room) {
     const roomElement = d3.select(`#room-${room.id}`);
     
@@ -383,32 +393,12 @@ export class FloorPlanComponent implements OnInit {
       .attr('width', room.width)
       .attr('height', room.height);
 
-    // Update resize handles
-    const corners = [
-      { class: 'nw', x: 0, y: 0 },
-      { class: 'ne', x: room.width, y: 0 },
-      { class: 'se', x: room.width, y: room.height },
-      { class: 'sw', x: 0, y: room.height }
-    ];
-
-    corners.forEach(corner => {
-      roomElement.select(`.resize-handle-corner.${corner.class}`)
-        .attr('cx', corner.x)
-        .attr('cy', corner.y);
-    });
-
-    const edges = [
-      { class: 'n', x: room.width / 2, y: 0 },
-      { class: 'e', x: room.width, y: room.height / 2 },
-      { class: 's', x: room.width / 2, y: room.height },
-      { class: 'w', x: 0, y: room.height / 2 }
-    ];
-
-    edges.forEach(edge => {
-      roomElement.select(`.resize-handle-edge.${edge.class}`)
-        .attr('cx', edge.x)
-        .attr('cy', edge.y);
-    });
+    // Update resize handles positions
+    roomElement.selectAll('.resize-handle')
+      .data(this.getHandlePositions(room))
+      .join('circle')
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y);
 
     // Update seat positions to ensure they stay within bounds
     room.seats.forEach(seat => {
