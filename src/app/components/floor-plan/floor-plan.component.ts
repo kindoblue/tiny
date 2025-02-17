@@ -117,28 +117,28 @@ export class FloorPlanComponent implements OnInit {
         {
           id: 'seat-1',
           label: 'D1',
-          x: 40,
-          y: 40,
-          width: 60,
-          height: 40,
+          x: 50,
+          y: 50,
+          width: 35,
+          height: 100,
           rotation: 0
         },
         {
           id: 'seat-2',
           label: 'D2',
-          x: 120,
-          y: 40,
-          width: 60,
-          height: 40,
+          x: 150,
+          y: 50,
+          width: 35,
+          height: 100,
           rotation: 0
         },
         {
           id: 'seat-3',
           label: 'D3',
-          x: 200,
-          y: 40,
-          width: 60,
-          height: 40,
+          x: 250,
+          y: 50,
+          width: 35,
+          height: 100,
           rotation: 0
         }
       ]
@@ -180,10 +180,10 @@ export class FloorPlanComponent implements OnInit {
     // Room title
     roomG.append('text')
       .attr('x', 10)
-      .attr('y', 25)
+      .attr('y', 15)
       .text(room.name)
       .style('fill', '#333')
-      .style('font-size', '14px')
+      .style('font-size', '12px')
       .style('font-weight', '500');
 
     // Render seats
