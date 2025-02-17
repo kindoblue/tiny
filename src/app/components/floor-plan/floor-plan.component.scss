@@ -1,18 +1,54 @@
 .floor-plan-container {
-  width: 100%;
-  height: calc(100vh - 200px);
   display: flex;
   flex-direction: column;
-  position: relative;
+  height: 100vh;
+  padding: 20px;
+  gap: 20px;
+}
+
+.svg-container {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #f5f5f5;
 }
 
 .controls {
-  padding: 1rem;
   display: flex;
-  gap: 1rem;
-  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.json-output {
+  padding: 20px;
   background-color: #f5f5f5;
-  border-bottom: 1px solid #ddd;
+  border-radius: 4px;
+  
+  pre {
+    margin: 0;
+    padding: 10px;
+    background-color: white;
+    border-radius: 4px;
+    overflow: auto;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+}
+
+// Room styles
+.room {
+  cursor: move;
+  
+  &.dragging {
+    opacity: 0.8;
+  }
+  
+  .room-bg {
+    fill-opacity: 0.7;
+  }
 }
 
 .floor-select {
@@ -25,25 +61,6 @@
   gap: 0.5rem;
 }
 
-.svg-container {
-  flex: 1;
-  border: 1px solid #ccc;
-  overflow: hidden;
-  background-color: white;
-}
-
-.room {
-  cursor: default;
-}
-
-.room.selected rect.room-bg {
-  cursor: grab;
-}
-
-.room.selected.dragging rect.room-bg {
-  cursor: grabbing;
-}
-
 .room rect.room-bg {
   fill: white;
   stroke: #2196F3;
@@ -54,11 +71,6 @@
 
 .room rect.room-bg:hover {
   fill: #f8f9fa;
-}
-
-.room.selected rect.room-bg {
-  stroke: #1976D2;
-  stroke-width: 3;
 }
 
 .room text {

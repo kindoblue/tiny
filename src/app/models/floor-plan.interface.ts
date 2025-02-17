@@ -1,8 +1,11 @@
 export interface Seat {
   id: string;
+  label: string;
   x: number;
   y: number;
-  label: string;
+  width: number;
+  height: number;
+  rotation: number;  // Rotation in degrees (0, 90, 180, 270)
   status?: 'occupied' | 'available' | 'reserved';
 }
 
