@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 interface HandlePosition {
-  position: 'nw' | 'ne' | 'se' | 'sw' | 'n' | 'e' | 's' | 'w';
+  position: 'se' | 'e' | 's';
   x: number;
   y: number;
 }
@@ -299,8 +299,8 @@ export class FloorPlanComponent implements OnInit {
       .data(this.getHandlePositions(room))
       .join('circle')
       .attr('class', 'resize-handle')
-      .attr('cx', d => d.x)  // Set the x position
-      .attr('cy', d => d.y)  // Set the y position
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
       .attr('r', handleRadius)
       .style('cursor', (d: HandlePosition) => this.getResizeCursor(d.position));
 
@@ -311,45 +311,17 @@ export class FloorPlanComponent implements OnInit {
         const d = event.subject as HandlePosition;
         
         switch (d.position) {
-          case 'nw':
-            room.x += dx;
-            room.y += dy;
-            room.width -= dx;
-            room.height -= dy;
-            break;
-          case 'ne':
-            room.y += dy;
-            room.width += dx;
-            room.height -= dy;
-            break;
           case 'se':
-            room.width += dx;
-            room.height += dy;
-            break;
-          case 'sw':
-            room.x += dx;
-            room.width -= dx;
-            room.height += dy;
-            break;
-          case 'n':
-            room.y += dy;
-            room.height -= dy;
+            room.width = Math.max(100, room.width + dx);
+            room.height = Math.max(100, room.height + dy);
             break;
           case 'e':
-            room.width += dx;
+            room.width = Math.max(100, room.width + dx);
             break;
           case 's':
-            room.height += dy;
-            break;
-          case 'w':
-            room.x += dx;
-            room.width -= dx;
+            room.height = Math.max(100, room.height + dy);
             break;
         }
-
-        // Ensure minimum size
-        if (room.width < 100) room.width = 100;
-        if (room.height < 100) room.height = 100;
 
         // Update room visuals
         this.updateRoomVisuals(room);
@@ -357,29 +329,18 @@ export class FloorPlanComponent implements OnInit {
   }
 
   private getHandlePositions(room: Room): HandlePosition[] {
-    const positions: HandlePosition[] = [
-      { position: 'nw', x: 0, y: 0 },
-      { position: 'ne', x: room.width, y: 0 },
+    return [
       { position: 'se', x: room.width, y: room.height },
-      { position: 'sw', x: 0, y: room.height },
-      { position: 'n', x: room.width / 2, y: 0 },
       { position: 'e', x: room.width, y: room.height / 2 },
-      { position: 's', x: room.width / 2, y: room.height },
-      { position: 'w', x: 0, y: room.height / 2 }
+      { position: 's', x: room.width / 2, y: room.height }
     ];
-    return positions;
   }
 
   private getResizeCursor(position: HandlePosition['position']): string {
     const cursors: Record<HandlePosition['position'], string> = {
-      nw: 'nw-resize',
-      ne: 'ne-resize',
       se: 'se-resize',
-      sw: 'sw-resize',
-      n: 'n-resize',
       e: 'e-resize',
-      s: 's-resize',
-      w: 'w-resize'
+      s: 's-resize'
     };
     return cursors[position];
   }
@@ -387,13 +348,14 @@ export class FloorPlanComponent implements OnInit {
   private updateRoomVisuals(room: Room) {
     const roomElement = d3.select(`#room-${room.id}`);
     
-    // Update room position and size
-    roomElement.attr('transform', `translate(${room.x},${room.y})`);
-    roomElement.select('rect')
+    // Update room position and size in a single operation
+    roomElement
+      .attr('transform', `translate(${room.x},${room.y})`)
+      .select('rect')
       .attr('width', room.width)
       .attr('height', room.height);
 
-    // Update resize handles positions
+    // Update resize handles positions in a single operation
     roomElement.selectAll('.resize-handle')
       .data(this.getHandlePositions(room))
       .join('circle')
@@ -415,9 +377,9 @@ export class FloorPlanComponent implements OnInit {
       seat.x = Math.max(effectiveWidth/2, Math.min(room.width - effectiveWidth/2, seat.x));
       seat.y = Math.max(effectiveHeight/2, Math.min(room.height - effectiveHeight/2, seat.y));
 
-      // Update seat visual position
-      const seatElement = roomElement.select(`#seat-${seat.id}`);
-      seatElement.attr('transform', `translate(${seat.x},${seat.y})`);
+      // Update seat visual position in a single operation
+      roomElement.select(`#seat-${seat.id}`)
+        .attr('transform', `translate(${seat.x},${seat.y})`);
     });
   }
 
